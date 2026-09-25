@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "input": "Local Mix project; dependencies already present; lib/**/*.ex and lib/**/*.exs for source analysis",
+  "steps": [
+    {
+      "id": "snapshot",
+      "input": "project files",
+      "tool": "SHA-256 + permissions + exclusive workspace lock + incremental file synchronization",
+      "output": "source.files + execution.cache",
+      "failure": "error; no approval"
+    },
+    {
+      "id": "ast",
+      "input": "original lib sources, parsed read-only with input hash verification",
+      "tool": "Elixir Code.string_to_quoted",
+      "output": "evidence.ast_results + source_sha256",
+      "failure": "unknown/failed gate; no approval"
+    },
+    {
+      "id": "build",
+      "input": "synchronized reusable workspace",
+      "tool": "mix compile --warnings-as-errors (incremental)",
+      "output": "build_success + evidence.build",
+      "failure": "gate; skip tests"
+    },
+    {
+      "id": "tests",
+      "input": "compiled snapshot",
+      "tool": "ExUnit formatter events; fixed seed and max-cases=1",
+      "output": "tests counters + evidence.tests",
+      "failure": "gate; absent counters remain null"
+    },
+    {
+      "id": "score",
+      "input": "raw metrics + policy",
+      "tool": "Rust engine::evaluate",
+      "output": "quality vector, gates, score",
+      "failure": "invalid input error; required missing metrics block approval"
+    },
+    {
+      "id": "diagnose",
+      "input": "gates + source indicators",
+      "tool": "rules + exact concept IDs",
+      "output": "instructions and provenance",
+      "failure": "invalid provenance error"
+    },
+    {
+      "id": "compare",
+      "input": "baseline and candidate measured independently with same policy",
+      "tool": "Rust engine::compare",
+      "output": "deltas and improvement decision",
+      "failure": "reject regression, missing evidence or changed test files"
+    }
+  ],
+  "metric_classes": {
+    "build_success": "environment_sensitive",
+    "test_command_success": "environment_sensitive",
+    "tests": "environment_sensitive",
+    "analysis_success": "strictly_deterministic",
+    "source_unchanged": "strictly_deterministic",
+    "function_count": "strictly_deterministic",
+    "decision_max": "strictly_deterministic",
+    "parameters_max": "strictly_deterministic",
+    "function_lines_p95": "strictly_deterministic",
+    "list_append_review": "advisory"
+  },
+  "unsupported": [
+    "coverage",
+    "mutation",
+    "property_test_classification",
+    "formal_complexity",
+    "runtime",
+    "memory",
+    "beam_reductions",
+    "concurrency_scalability"
+  ],
+  "missing_metric_policy": "null; never impute or redistribute weights",
+  "authority": "Only scripts decide acceptance; reports are evidence records, not signed attestations.",
+  "execution": {
+    "engine": "Rust",
+    "adapter": "Elixir subprocesses",
+    "cache": "artifacts only; tests always rerun",
+    "timings": "environment_sensitive; excluded from scoring"
+  }
+}

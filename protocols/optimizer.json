@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "enabled": false,
+  "reason": "El alcance actual es el revisor; no modificar proyectos evaluados.",
+  "future_contract": {
+    "max_iterations": 3,
+    "input": "informe autoritativo + instrucciones + restricciones del usuario",
+    "steps": [
+      "Con autorización para cambios, crear un candidato separado",
+      "Proponer una modificación basada en un hallazgo con evidencia",
+      "Ejecutar agent-quality evaluate candidato --baseline base",
+      "Adoptar solo si baseline_comparison.improved es true",
+      "Detenerse al alcanzar objetivo, no mejorar o agotar iteraciones"
+    ],
+    "llm_may_assign_scores": false,
+    "automatic_modification_implemented": false
+  }
+}

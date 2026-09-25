@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "bad": {
+    "status": "rejected",
+    "decision_max": 12,
+    "score": 6.683333,
+    "rules": [
+      "DECISION_LIMIT",
+      "LENGTH_INDICATOR",
+      "LIST_APPEND_REVIEW"
+    ]
+  },
+  "good": {
+    "status": "accepted",
+    "decision_max": 1,
+    "score": 10,
+    "rules": []
+  },
+  "comparison": {
+    "improved": true,
+    "correctness_delta": 0
+  },
+  "note": "Actual exact score is asserted in tests after independently calculating nearest-rank p95 and policy interpolation; no runtime improvement is claimed."
+}

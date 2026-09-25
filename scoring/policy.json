@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "profile": "elixir-mvp-indicators-v1",
+  "target_score": 8.0,
+  "weights": {
+    "correctness": 0.4,
+    "test_strength": 0.0,
+    "algorithmic_efficiency": 0.0,
+    "runtime_efficiency": 0.0,
+    "memory_efficiency": 0.0,
+    "structural_complexity": 0.3,
+    "maintainability": 0.15,
+    "readability": 0.15
+  },
+  "normalization": {
+    "structural_complexity": {"metric": "decision_max", "good": 3, "bad": 15},
+    "maintainability": {"metric": "parameters_max", "good": 3, "bad": 9},
+    "readability": {"metric": "function_lines_p95", "good": 15, "bad": 60}
+  },
+  "gates": {"decision_max": 10, "minimum_tests": 1, "allow_skipped_tests": false},
+  "execution": {"seed": 0, "timeout_seconds": 120, "generated_directories": ["tmp"]},
+  "comparison": {"minimum_delta": 0.05, "maximum_dimension_drop": 0.5}
+}

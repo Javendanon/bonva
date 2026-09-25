@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "rules": [
+    {"id": "SOURCE_UNCHANGED", "mode": "deterministic", "gate": "source_unchanged", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Revisar evidence.source_changes: los hooks alteraron entradas fuera de los directorios de salida permitidos. Evaluar una instantánea estable."},
+    {"id": "BUILD_REQUIRED", "mode": "deterministic", "gate": "build_success", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Resolver los errores del compilador conservados en evidence.build y volver a evaluar."},
+    {"id": "TEST_RUN_REQUIRED", "mode": "deterministic", "gate": "test_command_success", "knowledge": ["PROJECT_MEASUREMENT_POLICY", "PURE_MEASUREMENT_CORE"], "instruction": "Revisar evidence.tests; corregir el fallo de ejecución y repetir la suite completa."},
+    {"id": "TESTS_REQUIRED", "mode": "deterministic", "gate": "tests.minimum", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Agregar pruebas ejecutables del contrato; una suite vacía no acredita comportamiento."},
+    {"id": "TESTS_PASS", "mode": "deterministic", "gate": "tests.failures", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Corregir el comportamiento que falla, sin debilitar expectativas para elevar el puntaje."},
+    {"id": "TESTS_NOT_SKIPPED", "mode": "deterministic", "gate": "tests.skipped", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Ejecutar los casos omitidos o revisar explícitamente la política de exclusiones."},
+    {"id": "AST_REQUIRED", "mode": "deterministic", "gate": "analysis_success", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Resolver los errores de parseo o del adaptador registrados en evidence.ast."},
+    {"id": "FUNCTIONS_REQUIRED", "mode": "deterministic", "gate": "source_functions", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Proporcionar funciones Elixir analizables en lib; código solo generado requiere otro adaptador."},
+    {"id": "DECISION_LIMIT", "mode": "deterministic", "gate": "decision_max", "metric": "decision_indicator", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Revisar las decisiones de la cláusula indicada; simplificar condiciones preservando casos y reevaluar."},
+    {"id": "REQUIRED_MEASUREMENTS", "mode": "deterministic", "gate": "required_metrics", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Obtener evidencia de las dimensiones ponderadas; no sustituir datos ausentes por valores estimados."},
+    {"id": "QUALITY_TARGET", "mode": "deterministic", "gate": "target_score", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Revisar las dimensiones medidas más débiles y contrastar cada cambio mediante una nueva evaluación."},
+    {"id": "PARAMETER_INDICATOR", "mode": "deterministic", "dimension": "maintainability", "metric": "arity", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Revisar la interfaz de la cláusula con muchos parámetros; no agruparlos artificialmente solo para mejorar el indicador."},
+    {"id": "LENGTH_INDICATOR", "mode": "deterministic", "dimension": "readability", "metric": "lines", "knowledge": ["PROJECT_MEASUREMENT_POLICY"], "instruction": "Revisar la cláusula larga y sus responsabilidades; preservar pruebas y nombres significativos."},
+    {"id": "LIST_APPEND_REVIEW", "mode": "advisory", "knowledge": ["PERSISTENT_APPEND_COST"], "instruction": "Comprobar si ++ concatena una lista acumulada repetidamente. Medir tamaños y operaciones antes de proponer prepend/reverse; verificar orden, duplicados y caso vacío."}
+  ]
+}

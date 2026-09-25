@@ -1,0 +1,437 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evaluator contracts v1.0",
+  "$defs": {
+    "metrics": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "build_success",
+        "test_command_success",
+        "analysis_success",
+        "source_unchanged",
+        "tests",
+        "function_count",
+        "decision_max",
+        "parameters_max",
+        "function_lines_p95"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "build_success": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "test_command_success": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "analysis_success": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "source_unchanged": {
+          "type": ["boolean", "null"]
+        },
+        "tests": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": [
+            "total",
+            "passed",
+            "failed",
+            "skipped",
+            "excluded"
+          ],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "passed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "skipped": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "excluded": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "function_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "decision_max": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "parameters_max": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "function_lines_p95": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "vector": {
+      "type": "object",
+      "required": [
+        "correctness",
+        "test_strength",
+        "algorithmic_efficiency",
+        "runtime_efficiency",
+        "memory_efficiency",
+        "structural_complexity",
+        "maintainability",
+        "readability"
+      ],
+      "properties": {
+        "correctness": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "test_strength": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "algorithmic_efficiency": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "runtime_efficiency": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "memory_efficiency": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "structural_complexity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "maintainability": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "readability": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        }
+      },
+      "additionalProperties": false
+    },
+    "concept": {
+      "type": "object",
+      "required": [
+        "id",
+        "claim",
+        "conditions",
+        "sources",
+        "validation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "claim": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "section"
+            ],
+            "properties": {
+              "book": {
+                "type": "string"
+              },
+              "units": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "section": {
+                "type": "string"
+              },
+              "file": {
+                "type": "string"
+              },
+              "source_sha256": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string"
+              },
+              "unit_kind": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "validation": {
+          "type": "string"
+        },
+        "technique": {
+          "type": "string"
+        },
+        "trade_offs": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "mode",
+        "knowledge",
+        "instruction"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "deterministic",
+            "advisory",
+            "unsupported"
+          ]
+        },
+        "knowledge": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "gate": {
+          "type": "string"
+        },
+        "metric": {
+          "type": "string"
+        },
+        "dimension": {
+          "enum": [
+            "correctness",
+            "test_strength",
+            "algorithmic_efficiency",
+            "runtime_efficiency",
+            "memory_efficiency",
+            "structural_complexity",
+            "maintainability",
+            "readability"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "knowledge": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "concepts"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "concepts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/concept"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "rules"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rule"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "report": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "policy",
+        "profile",
+        "status",
+        "accepted",
+        "score",
+        "target_score",
+        "quality_vector",
+        "raw_metrics",
+        "source",
+        "evidence",
+        "implementation",
+        "diagnosis",
+        "gates",
+        "limitations"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "status": {
+          "enum": [
+            "accepted",
+            "rejected",
+            "incomplete"
+          ]
+        },
+        "accepted": {
+          "type": "boolean"
+        },
+        "score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 10
+        },
+        "target_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "profile": {
+          "type": "string"
+        },
+        "quality_vector": {
+          "$ref": "#/$defs/vector"
+        },
+        "raw_metrics": {
+          "$ref": "#/$defs/metrics"
+        },
+        "policy": {
+          "type": "object"
+        },
+        "source": {
+          "type": "object"
+        },
+        "evidence": {
+          "type": "object"
+        },
+        "implementation": {
+          "type": "object"
+        },
+        "diagnosis": {
+          "type": "object"
+        },
+        "gates": {
+          "type": "object"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "baseline_report": {
+          "$ref": "#/$defs/report"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
