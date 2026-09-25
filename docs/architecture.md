@@ -7,7 +7,7 @@ describe decisiones históricas, no instrucciones de ejecución actuales.
 
 ## Evaluación del repositorio inicial
 
-El repositorio contenía el master prompt, cuatro fuentes, notas consultables,
+El repositorio contenía cuatro fuentes, notas consultables,
 `scripts/knowledge.py` y dos pruebas Python. No había aplicación Mix ni CI propia.
 Se conserva esa estructura y se añade un núcleo Python sin dependencias externas
 y un adaptador Elixir. La unidad de entrada inicial es un proyecto Mix individual.
@@ -85,7 +85,7 @@ variaciones, pero no convierten procesos, red o servicios externos en funciones 
 No se incorporan tiempos de reloj a la nota.
 
 Los originales y extracciones citados se verifican por hash. Las fuentes de
-política señalan secciones del master prompt. Ningún umbral se atribuye a Okasaki
+política señalan los archivos de política y perfil de evaluación. Ningún umbral se atribuye a Okasaki
 o Hebert. Los hash permiten detectar diferencias; no son firmas de autenticidad.
 
 No hay interfaz que acepte una nota del LLM. La API pura admite métricas para

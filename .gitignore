@@ -9,3 +9,6 @@ target/
 # Informes de ejecuciones locales
 /reports/*
 !/reports/README.md
+
+# Prompt de trabajo local
+/agent_quality_system_master_prompt.md

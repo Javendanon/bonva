@@ -38,4 +38,4 @@ Los localizadores permanentes son las unidades de `sources/*.json`; los bloques 
 
 Notas por capítulo, manifiesto con hashes, mapa de conceptos y herramienta de ingestión/consulta disponibles; ver `README.md`. Los libros nuevos entran como `unread`. Persistir contenido permite recuperarlo, no convierte por sí mismo la extracción en aprendizaje validado.
 
-Antes de convertir una afirmación en regla del evaluador: cotejar su fuente y premisas, resolver símbolos/posibles erratas, comprobar su aplicabilidad al modelo de ejecución y definir evidencia ejecutable. No se ha implementado el evaluador ni reescrito el master prompt. Las notas contienen pendientes explícitos; ningún script debe tratarlos como reglas aprobadas.
+Antes de convertir una afirmación en regla del evaluador: cotejar su fuente y premisas, resolver símbolos/posibles erratas, comprobar su aplicabilidad al modelo de ejecución y definir evidencia ejecutable. Este registro corresponde a la lectura inicial, anterior a la implementación del evaluador. Las notas contienen pendientes explícitos; ningún script debe tratarlos como reglas aprobadas.

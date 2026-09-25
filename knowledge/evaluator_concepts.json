@@ -5,7 +5,7 @@
       "id": "PROJECT_MEASUREMENT_POLICY",
       "claim": "Las herramientas producen evidencia y el motor aplica gates y umbrales configurados.",
       "conditions": ["Perfil de política explícito; umbrales locales, no escalas universales"],
-      "sources": [{"file": "agent_quality_system_master_prompt.md", "section": "11, 12, 20, 21, 23"}],
+      "sources": [{"file": "scoring/policy.json", "section": "weights, target_score, gates, comparison"}, {"file": "profiles/elixir-mvp.json", "section": "dimensions, gates, required_capabilities"}],
       "validation": "project_policy"
     },
     {

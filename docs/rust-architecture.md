@@ -16,6 +16,32 @@ La capa de informe enlaza hallazgos con las reglas y conceptos existentes. Las
 fuentes citadas se verifican por hash. No hay generación de cifras por un modelo.
 El contrato de informe conserva las ocho dimensiones del MVP.
 
+## Organización del motor y el CLI
+
+`src/engine.rs` conserva la interfaz JSON pública. Los módulos internos separan
+configuración validada, interpretación de expresiones, cálculo, comparación y
+serialización de resultados:
+
+- `engine/config.rs`: política y perfil tipados; validación de pesos, intervalos,
+  dimensiones y gates antes del cálculo.
+- `engine/expression.rs`: intérprete con enums para referencias, constantes,
+  sumas y predicados. Conserva cortocircuito y evidencia desconocida.
+- `engine/evaluation.rs`: estrategias de dimensión por coste o razón y cálculo
+  ponderado con Decimal.
+- `engine/outcome.rs`: estados explícitos de evaluación y gates; redondeo al
+  producir el informe, después de aplicar los umbrales.
+- `engine/comparison.rs`: diferencias y regresiones sobre resultados reportados.
+
+Las expresiones ambiguas, los operadores desconocidos y las configuraciones
+incompletas se rechazan al decodificar el perfil. Las métricas siguen siendo JSON
+porque cada adaptador puede aportar campos propios de su lenguaje.
+
+El CLI usa un enum Command con argumentos por comando. `cli/command.rs` parsea;
+`cli.rs` despacha; `cli/output.rs` escribe informes y determina códigos de salida.
+La biblioteca devuelve el código al ejecutable y no termina el proceso. La
+resolución de rutas vive en `paths.rs`, compartida con los adaptadores sin que
+estos dependan del CLI.
+
 ## Espacio de ejecución
 
 1. Canonicalizar rutas y rechazar superposición entre caché y original.
