@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+_build/
+.DS_Store
+target/
+.quality-cache/
+.elixir_ls/

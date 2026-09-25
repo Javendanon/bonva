@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "concepts": [
+    {
+      "id": "PROJECT_MEASUREMENT_POLICY",
+      "claim": "Las herramientas producen evidencia y el motor aplica gates y umbrales configurados.",
+      "conditions": ["Perfil de política explícito; umbrales locales, no escalas universales"],
+      "sources": [{"file": "agent_quality_system_master_prompt.md", "section": "11, 12, 20, 21, 23"}],
+      "validation": "project_policy"
+    },
+    {
+      "id": "PERSISTENT_APPEND_COST",
+      "claim": "La asociación y el tamaño de segmentos condicionan el coste de concatenar secuencias.",
+      "conditions": ["Verificar representación, operador resuelto, tamaños y patrón de repetición"],
+      "sources": [{"book": "pfds", "units": [99, 100], "section": "7.1.2"}],
+      "validation": "reviewed_prose; no_translation_of_damaged_formulas",
+      "technique": "Considerar acumulación por prepend y una inversión final cuando preserve el orden y el contrato.",
+      "trade_offs": "La sintaxis aislada no establece coste; segmentos acotados o geométricos cambian el análisis."
+    },
+    {
+      "id": "PURE_MEASUREMENT_CORE",
+      "claim": "Separar transformaciones puras de efectos permite probar el cálculo con entradas conocidas.",
+      "conditions": ["La medición externa conserva sus efectos y límites de reproducibilidad"],
+      "sources": [{"book": "proper", "units": [43], "section": "5: Thinking About Program Structure"}],
+      "validation": "reviewed_prose_and_exercised_in_engine_tests"
+    }
+  ]
+}

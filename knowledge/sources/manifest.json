@@ -1,0 +1,113 @@
+[
+  {
+    "id": "haskell",
+    "file": "dokumen.pub_algorithm-design-with-haskell-9781108858267-1108858260.pdf",
+    "sha256": "6e73cc2026d58049d5763835a75369b4f24b37687aba9e2125d2441e4762d3ba",
+    "extracted": "knowledge/sources/haskell.json",
+    "units": 454,
+    "characters": 906134,
+    "empty_units": [
+      1,
+      3,
+      7,
+      13,
+      19,
+      21,
+      41,
+      77,
+      79,
+      109,
+      137,
+      159,
+      253,
+      255,
+      257,
+      283,
+      305,
+      327,
+      351,
+      383,
+      385,
+      421
+    ],
+    "title": "Algorithm Design with Haskell — Bird and Gibbons, 2020",
+    "extracted_sha256": "566014ced5a9965aae0e9dbe968e292d0101909d3698c22301b91c99767d909f",
+    "reading_status": "extracted_text_read",
+    "validation_status": "formulas_figures_and_code_not_fully_validated",
+    "unit_kind": "pdf_physical_page",
+    "notes": "knowledge/notes/haskell.md",
+    "extractor": {
+      "name": "PyMuPDF",
+      "version": "1.28.2",
+      "sort": true
+    }
+  },
+  {
+    "id": "pearls",
+    "file": "Pearls of Functional Algorithm Design.pdf",
+    "sha256": "02a409ce5ebf4d0553abaddfba071d55a1afda033306cac0d10d17a11bea2028",
+    "extracted": "knowledge/sources/pearls.json",
+    "units": 291,
+    "characters": 543248,
+    "empty_units": [
+      1,
+      4,
+      8,
+      14
+    ],
+    "title": "Pearls of Functional Algorithm Design — 2010",
+    "extracted_sha256": "b28944196f2653aba960fa08c6cd6827fd59bb56458e5f13928c7bc340c83426",
+    "reading_status": "extracted_text_read",
+    "validation_status": "formulas_figures_and_code_not_fully_validated",
+    "unit_kind": "pdf_physical_page",
+    "notes": "knowledge/notes/pearls.md",
+    "extractor": {
+      "name": "PyMuPDF",
+      "version": "1.28.2",
+      "sort": true
+    }
+  },
+  {
+    "id": "pfds",
+    "file": "purely-functional-data-structures (1).pdf",
+    "sha256": "7b7eba01961f8a6dc3a9da4e08013fb6cf739519c95acce6a6c9cd1d586d5258",
+    "extracted": "knowledge/sources/pfds.json",
+    "units": 162,
+    "characters": 458731,
+    "empty_units": [
+      4,
+      6,
+      8
+    ],
+    "title": "Purely Functional Data Structures — CMU-CS-96-177, 1996",
+    "extracted_sha256": "b635516015db9dd2378f8ecb162022aa1467e1aaf1debbddfd23b6a94e71d701",
+    "reading_status": "extracted_text_read",
+    "validation_status": "formulas_figures_and_code_not_fully_validated",
+    "unit_kind": "pdf_physical_page",
+    "notes": "knowledge/notes/pfds.md",
+    "extractor": {
+      "name": "PyMuPDF",
+      "version": "1.28.2",
+      "sort": true
+    }
+  },
+  {
+    "id": "proper",
+    "file": "dokumen.pub_property-based-testing-with-proper-erlang-and-elixir.epub",
+    "sha256": "c6d65536c71e7151cf889541b45b85d72ccfddb4d0b1249393c01d15a3fd9d7a",
+    "extracted": "knowledge/sources/proper.json",
+    "units": 107,
+    "characters": 700157,
+    "empty_units": [],
+    "title": "Property-Based Testing with PropEr, Erlang, and Elixir — P1.0, 2019",
+    "extracted_sha256": "990413d29564eb0f1528509116bef1196e58bb3539cca5f266986fcf5408a9d4",
+    "reading_status": "extracted_text_read",
+    "validation_status": "formulas_figures_and_code_not_fully_validated",
+    "unit_kind": "epub_spine_item",
+    "notes": "knowledge/notes/proper.md",
+    "extractor": {
+      "name": "HTMLParser legacy extraction",
+      "version": "not recorded; retained without re-extraction"
+    }
+  }
+]
