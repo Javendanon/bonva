@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "id": "LIST_CONSTRUCTION_V1",
+  "concept": "PERSISTENT_APPEND_COST",
+  "contract": "identity_copy_of_proper_list",
+  "patterns": ["append_singleton", "prepend_reverse"],
+  "domain": {"alphabet": [-1, 0, 1], "max_length": 5},
+  "additional_cases": [[null, "x", [], [1, 1]], [1, 1, 0, 1]],
+  "benchmark": {"sizes": [128, 256, 512, 1024], "warmup": 2, "samples": 9},
+  "limits": {"max_sites": 8, "timeout_seconds": 90},
+  "cost_model": "linked_list_spine_v1",
+  "decision": "Flag only verified append_singleton with passing finite-domain identity checks and greater modeled constructor work than prepend_reverse for all benchmark sizes.",
+  "sources": [
+    {"book": "pfds", "units": [99, 100], "section": "7.1.2"},
+    {"book": "proper", "units": [28], "section": "3: Generalizing Example Tests"}
+  ],
+  "language_references": [
+    {"url": "https://elixir.hexdocs.pm/1.18.4/Kernel.html#++/2", "claim": "Concatenation traverses and copies the left list spine."},
+    {"url": "https://elixir.hexdocs.pm/1.18.4/Enum.html#reduce/3", "claim": "The reducer visits each input element with the previous accumulator."}
+  ]
+}

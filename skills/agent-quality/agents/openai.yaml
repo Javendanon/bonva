@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Quality"
+  short_description: "Evalúa Elixir con evidencia calculada en Rust"
+  default_prompt: "Usa $agent-quality para evaluar este proyecto Elixir sin modificarlo y explicar sus resultados y límites de cobertura."

@@ -1,0 +1,200 @@
+{
+  "schema_version": "1.0",
+  "id": "elixir-mvp-indicators-v1",
+  "adapter": "elixir",
+  "required_capabilities": [
+    "build",
+    "tests",
+    "source_ast"
+  ],
+  "dimension_order": [
+    "correctness",
+    "test_strength",
+    "algorithmic_efficiency",
+    "runtime_efficiency",
+    "memory_efficiency",
+    "structural_complexity",
+    "maintainability",
+    "readability"
+  ],
+  "protected_dimensions": [
+    "correctness"
+  ],
+  "dimensions": {
+    "correctness": {
+      "mode": "ratio",
+      "numerator": {
+        "metric": "/tests/passed"
+      },
+      "denominator": {
+        "metric": "/tests/total"
+      },
+      "available": {
+        "metric": "/test_command_success"
+      }
+    },
+    "test_strength": {
+      "mode": "unsupported"
+    },
+    "algorithmic_efficiency": {
+      "mode": "unsupported"
+    },
+    "runtime_efficiency": {
+      "mode": "unsupported"
+    },
+    "memory_efficiency": {
+      "mode": "unsupported"
+    },
+    "structural_complexity": {
+      "mode": "cost",
+      "value": {
+        "metric": "/decision_max"
+      },
+      "when": {
+        "truth": {
+          "metric": "/analysis_success"
+        }
+      }
+    },
+    "maintainability": {
+      "mode": "cost",
+      "value": {
+        "metric": "/parameters_max"
+      },
+      "when": {
+        "truth": {
+          "metric": "/analysis_success"
+        }
+      }
+    },
+    "readability": {
+      "mode": "cost",
+      "value": {
+        "metric": "/function_lines_p95"
+      },
+      "when": {
+        "truth": {
+          "metric": "/analysis_success"
+        }
+      }
+    }
+  },
+  "gates": [
+    {
+      "id": "build_success",
+      "check": {
+        "truth": {
+          "metric": "/build_success"
+        }
+      }
+    },
+    {
+      "id": "source_unchanged",
+      "check": {
+        "truth": {
+          "metric": "/source_unchanged"
+        }
+      }
+    },
+    {
+      "id": "test_command_success",
+      "check": {
+        "truth": {
+          "metric": "/test_command_success"
+        }
+      }
+    },
+    {
+      "id": "analysis_success",
+      "check": {
+        "truth": {
+          "metric": "/analysis_success"
+        }
+      }
+    },
+    {
+      "id": "source_functions",
+      "check": {
+        "op": "gt",
+        "left": {
+          "metric": "/function_count"
+        },
+        "right": {
+          "constant": 0
+        }
+      }
+    },
+    {
+      "id": "tests.minimum",
+      "check": {
+        "op": "gte",
+        "left": {
+          "sum": [
+            {
+              "metric": "/tests/passed"
+            },
+            {
+              "metric": "/tests/failed"
+            }
+          ]
+        },
+        "right": {
+          "policy": "/gates/minimum_tests"
+        }
+      }
+    },
+    {
+      "id": "tests.failures",
+      "check": {
+        "op": "eq",
+        "left": {
+          "metric": "/tests/failed"
+        },
+        "right": {
+          "constant": 0
+        }
+      }
+    },
+    {
+      "id": "tests.skipped",
+      "check": {
+        "when_present": "/tests",
+        "or": [
+          {
+            "op": "eq",
+            "left": {
+              "sum": [
+                {
+                  "metric": "/tests/skipped"
+                },
+                {
+                  "metric": "/tests/excluded"
+                }
+              ]
+            },
+            "right": {
+              "constant": 0
+            }
+          },
+          {
+            "truth": {
+              "policy": "/gates/allow_skipped_tests"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "decision_max",
+      "check": {
+        "op": "lte",
+        "left": {
+          "metric": "/decision_max"
+        },
+        "right": {
+          "policy": "/gates/decision_max"
+        }
+      }
+    }
+  ]
+}
