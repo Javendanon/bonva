@@ -183,3 +183,58 @@ fn all_gates_have_rules_and_advisories_keep_provenance_without_scoring() {
     );
     assert!(diagnosis["findings"][0]["sources"][0]["source_sha256"].is_string());
 }
+
+#[test]
+fn malformed_profiles_are_rejected_at_the_configuration_boundary() {
+    let mut profiles = Vec::new();
+    let mut malformed = profile();
+    malformed["dimensions"]["correctness"]["mode"] = json!("unknown");
+    profiles.push(malformed);
+    let mut malformed = profile();
+    malformed["gates"][0]["check"] =
+        json!({"op":"unknown", "left":{"constant":1}, "right":{"constant":2}});
+    profiles.push(malformed);
+    let mut malformed = profile();
+    malformed["dimensions"]["correctness"]["numerator"] =
+        json!({"metric":"/tests/passed", "constant":10});
+    profiles.push(malformed);
+    let mut malformed = profile();
+    malformed["gates"][0]["check"] = json!({"truth":{"constant":true}, "or":[]});
+    profiles.push(malformed);
+    let mut malformed = profile();
+    malformed["gates"][0]["check"] = json!({"truth":{"constant":true}, "when_present":42});
+    profiles.push(malformed);
+    for malformed in profiles {
+        assert!(
+            engine::validate(&policy(), &malformed).is_err(),
+            "{malformed}"
+        );
+        assert!(engine::evaluate(&raw(), &policy(), &malformed, &[]).is_err());
+    }
+}
+
+#[test]
+fn predicate_or_keeps_unknowns_and_short_circuits_on_true() {
+    let mut specification = profile();
+    specification["gates"].as_array_mut().unwrap().push(json!({
+        "id":"custom", "check":{"or":[
+            {"truth":{"metric":"/absent"}},
+            {"truth":{"constant":false}}
+        ]}
+    }));
+    let caps = ["build".into(), "tests".into(), "source_ast".into()];
+    let result = engine::evaluate(&raw(), &policy(), &specification, &caps).unwrap();
+    assert_eq!(result["gates"]["unknown"], json!(["custom"]));
+    let gate = specification["gates"]
+        .as_array_mut()
+        .unwrap()
+        .last_mut()
+        .unwrap();
+    gate["check"]["or"][1]["truth"]["constant"] = json!(true);
+    gate["check"]["or"]
+        .as_array_mut()
+        .unwrap()
+        .push(json!({"truth":{"policy":"/missing"}}));
+    let result = engine::evaluate(&raw(), &policy(), &specification, &caps).unwrap();
+    assert_eq!(result["accepted"], true);
+}
