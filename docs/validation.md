@@ -1,7 +1,9 @@
 # Validación ejecutada — 2026-09-15
 
 Este documento registra una validación histórica. Sus informes de ejecución se
-retiraron del repositorio; las pruebas actuales generan su propia evidencia.
+retiraron del repositorio, al igual que el evaluador Python y sus pruebas.
+Las pruebas actuales del evaluador están en Rust y generan su propia evidencia.
+La suite Python vigente solo prueba la herramienta de libros.
 
 ## Suite propia
 

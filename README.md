@@ -105,7 +105,7 @@ Detectar `++` genera una recomendación consultiva, sin afirmar Big-O ni restar 
 
 Se usan decimales y redondeo a seis posiciones. La versión Rust acepta política
 numérica de hasta seis decimales y rechaza desbordamientos. La equivalencia se
-comprueba con los informes previos y 64 casos de referencia del motor Python.
+comprueba con 64 casos de referencia conservados del motor Python anterior.
 
 ## Estructura
 
@@ -129,7 +129,7 @@ soporte de herramientas. El motor ya se prueba con un perfil sin conceptos Elixi
 
 ```sh
 cargo test --locked
-cargo test --locked --test elixir_integration -- --ignored --test-threads=1
+cargo test --locked -- --ignored --test-threads=1
 cargo clippy --locked --all-targets -- -D warnings
 cargo fmt --check
 ```
@@ -137,6 +137,7 @@ cargo fmt --check
 Las pruebas de integración se ejecutan explícitamente porque necesitan Mix y
 permisos para sockets locales. Cubren ejecuciones sin caché y con caché, cambios de
 fuente, pruebas fallidas y vacías, alteraciones de entrada y conservación del original.
+También se comprueba el parser Elixir y la regla de construcción de listas.
 
 Los ejemplos malos en `fixtures/bad` son intencionales: sirven para probar al
 evaluador, no son código recomendado. Su resultado se conserva: 6.683333 frente
@@ -144,10 +145,14 @@ a 10 en la versión mejorada, con el mismo comportamiento ejercitado.
 
 ## Migración y límites
 
-La implementación Python anterior se conserva como referencia de migración y
-para sus pruebas históricas. El binario Rust no la invoca. La consulta de libros
-`scripts/knowledge.py` sigue disponible como herramienta independiente; no es
-una dependencia del evaluador.
+El evaluador tiene una única implementación en Rust. Se retiraron el motor,
+el recolector, el CLI y el validador Python duplicados; su historial permanece
+en Git. Los 64 casos de referencia se conservan como datos en
+`fixtures/scoring_oracle.json` y se verifican desde Rust.
+
+Python solo se usa para importar, verificar y consultar libros mediante
+`scripts/knowledge.py`, con pruebas en `tests/test_knowledge.py`. Esta herramienta
+no es una dependencia del evaluador.
 
 El revisor devuelve instrucciones y no modifica proyectos. No se implementó
 un optimizador automático. Tampoco se mide aún cobertura, mutación, crecimiento

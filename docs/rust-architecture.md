@@ -68,9 +68,11 @@ Las pruebas normales Rust leen esa evidencia fija y no ejecutan Python.
 Las integraciones sobre fixtures verifican igualdad de diagnóstico entre
 ejecuciones con caché y sin ella. No dependen de informes locales guardados.
 
-Los scripts Python se mantienen como referencia histórica y herramienta de
-consulta del corpus; no forman parte del camino de ejecución Rust. Los archivos
-de la migración parcial a un núcleo Elixir fueron retirados.
+El evaluador Python duplicado se retiró junto con sus pruebas específicas.
+Los contratos de cálculo, comparación, diagnóstico y análisis se verifican en
+las suites Rust. Los archivos JSON de política y esquema siguen siendo recursos
+activos. Python se conserva únicamente para la herramienta de libros
+`scripts/knowledge.py` y sus pruebas.
 
 Pendientes: distribución del binario con recursos, adaptadores adicionales,
 clasificación de métricas avanzadas, límites de retención de logs/caché y medición

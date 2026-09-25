@@ -98,3 +98,30 @@ fn source_mutation_blocks_and_changed_contract_rejects_comparison() {
     assert_eq!(report["accepted"], false);
     assert!(!project.join("lib/generated.ex").exists());
 }
+
+#[test]
+#[ignore = "requires Mix execution"]
+fn generated_outputs_are_allowed_without_modifying_original() {
+    let temp = tempfile::tempdir().unwrap();
+    let project = temp.path().join("project");
+    copy(&data::root().join("fixtures/good"), &project);
+    fs::write(
+        project.join("test/output_test.exs"),
+        r#"defmodule OutputTest do
+          use ExUnit.Case
+          test "generated output" do
+            File.mkdir_p!("tmp")
+            File.write!("tmp/result.txt", "generated")
+            assert true
+          end
+        end"#,
+    )
+    .unwrap();
+    let before = workspace::inventory(&project).unwrap();
+    let result =
+        report::evaluate(&project, &policy(), &profile(), &temp.path().join("cache")).unwrap();
+    assert_eq!(result["accepted"], true);
+    assert_eq!(result["raw_metrics"]["source_unchanged"], true);
+    assert_eq!(workspace::inventory(&project).unwrap(), before);
+    assert!(!project.join("tmp/result.txt").exists());
+}

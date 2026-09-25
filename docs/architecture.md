@@ -2,6 +2,8 @@
 
 Documento histórico del MVP Python v0.1. La arquitectura vigente está en
 `rust-architecture.md`; los indicadores descritos aquí se conservan.
+El código del evaluador Python y sus pruebas se retiraron; este documento
+describe decisiones históricas, no instrucciones de ejecución actuales.
 
 ## Evaluación del repositorio inicial
 
