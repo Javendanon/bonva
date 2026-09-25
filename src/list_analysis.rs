@@ -1,5 +1,5 @@
 //! A versioned, deliberately narrow rule. Observations never participate in its decision.
-use crate::{cli, data, runner, workspace};
+use crate::{data, paths, runner, workspace};
 use anyhow::{Context, Result, ensure};
 use serde_json::{Value, json};
 use std::{
@@ -216,7 +216,7 @@ pub fn validate(
 pub fn analyze(project: &Path, cache: &Path) -> Result<Value> {
     let project = project.canonicalize()?;
     ensure!(project.is_dir(), "Project directory required");
-    let cache = cli::resolve_destination(cache)?;
+    let cache = paths::resolve_destination(cache)?;
     ensure!(
         !cache.starts_with(&project) && !project.starts_with(&cache),
         "Cache and project must be disjoint"

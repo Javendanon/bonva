@@ -82,7 +82,7 @@ impl Adapter for Elixir {
             "Positive decision limit required"
         );
         // Resolve cache before writing so it can never be located inside the target.
-        let absolute_cache = crate::cli::resolve_destination(cache)?;
+        let absolute_cache = crate::paths::resolve_destination(cache)?;
         ensure!(
             !absolute_cache.starts_with(&original) && !original.starts_with(&absolute_cache),
             "Cache and project must be disjoint"

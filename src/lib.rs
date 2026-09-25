@@ -3,6 +3,7 @@ pub mod cli;
 pub mod data;
 pub mod engine;
 pub mod list_analysis;
+pub mod paths;
 pub mod report;
 pub mod runner;
 pub mod workspace;
