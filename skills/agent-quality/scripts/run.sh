@@ -9,7 +9,7 @@ else
   engine_root="$(cd -- "$skill_dir/../.." && pwd)"
 fi
 if [[ ! -f "$engine_root/Cargo.toml" || ! -f "$engine_root/src/list_analysis.rs" ]]; then
-  printf '%s\n' 'No se encontró el motor. Define AGENT_QUALITY_ROOT con la ruta del repositorio refactoring-agent.' >&2
+  printf '%s\n' 'No se encontró el motor. Define AGENT_QUALITY_ROOT con la ruta del repositorio bonva.' >&2
   exit 2
 fi
 command -v cargo >/dev/null || { printf '%s\n' 'Se requiere Cargo/Rust en PATH.' >&2; exit 2; }

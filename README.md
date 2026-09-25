@@ -1,4 +1,11 @@
-# Agent Quality — núcleo Rust, adaptadores por lenguaje
+# bonva — núcleo Rust, adaptadores por lenguaje
+
+**bonva** es un evaluador determinista de calidad de código. Su nombre homenajea
+a Eduardo Bonvallet, el Gurú, con un guiño a Refactoring Guru.
+
+El repositorio vive en [Javendanon/bonva](https://github.com/Javendanon/bonva).
+El paquete Rust, el ejecutable y la skill conservan el identificador técnico
+`agent-quality`; los comandos existentes siguen vigentes.
 
 El núcleo valida evidencia, normaliza indicadores, calcula puntajes y aplica gates.
 El primer adaptador evalúa proyectos Elixir/Mix. No hay un LLM en el cálculo ni en

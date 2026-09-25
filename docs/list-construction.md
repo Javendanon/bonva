@@ -1,6 +1,6 @@
 # Construcción de listas: regla ejecutable V1
 
-`agent-quality analyze-lists PROJECT --output NEW_FILE` conecta conocimiento,
+El comando de bonva `agent-quality analyze-lists PROJECT --output NEW_FILE` conecta conocimiento,
 reconocimiento AST, comprobaciones de comportamiento, modelo de coste y diagnóstico.
 La decisión se calcula en Rust; Elixir aporta AST y ejecución de expresiones reconocidas.
 No interviene un LLM en métricas ni decisiones. El informe es independiente del score MVP.

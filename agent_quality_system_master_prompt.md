@@ -1,4 +1,4 @@
-# Master Prompt — Deterministic Agent Code Quality System
+# bonva — Master Prompt for the Deterministic Agent Code Quality System
 
 You are the lead software architect and implementation agent responsible for designing and building a deterministic code-quality evaluation and optimization system for AI coding agents.
 
