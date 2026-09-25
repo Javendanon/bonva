@@ -34,6 +34,24 @@ class KnowledgeTests(unittest.TestCase):
         for args in [("show", "pfds", "0"), ("search", " "), ("search", "x", "--book", "missing")]:
             self.assertEqual(self.cli(*args).returncode, 2)
 
+    def test_cli_listing_and_search_contract(self):
+        listed = self.cli("list")
+        self.assertEqual(listed.returncode, 0, listed.stderr)
+        ids = [record["id"] for record in json.loads(listed.stdout)]
+        self.assertEqual(ids, sorted(ids))
+        searched = self.cli("search", " AMORTIZED ", "--book", "pfds", "--limit", "1")
+        self.assertEqual(searched.returncode, 0, searched.stderr)
+        result = json.loads(searched.stdout)
+        self.assertEqual(result["query"], "amortized")
+        self.assertEqual(len(result["matches"]), 1)
+        self.assertGreater(result["total"], 1)
+        self.assertEqual(result["matches"][0]["book"], "pfds")
+        self.assertEqual(result["ordering"], "book_id_then_unit")
+
+    def test_unsupported_format_has_explicit_error(self):
+        with self.assertRaisesRegex(ValueError, "Supported formats: PDF and EPUB"):
+            k.extract(Path("unsupported.txt"))
+
     def test_ingestion_preserves_order_and_provenance(self):
         original_root, original_manifest = k.ROOT, k.MANIFEST
         self.addCleanup(setattr, k, "ROOT", original_root)

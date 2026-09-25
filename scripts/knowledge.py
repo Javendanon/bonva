@@ -69,14 +69,15 @@ class TextParser(HTMLParser):
             self.parts.append(data)
 
 
-def extract(path):
-    if path.suffix.lower() == ".pdf":
-        import pymupdf
-        with pymupdf.open(path) as doc:
-            rows = [{"unit": i + 1, "text": p.get_text(sort=True)} for i, p in enumerate(doc)]
-        return rows, {"name": "PyMuPDF", "version": pymupdf.VersionBind, "sort": True}
-    if path.suffix.lower() != ".epub":
-        raise ValueError("Supported formats: PDF and EPUB")
+def _extract_pdf(path):
+    import pymupdf
+
+    with pymupdf.open(path) as doc:
+        rows = [{"unit": i + 1, "text": page.get_text(sort=True)} for i, page in enumerate(doc)]
+    return rows, {"name": "PyMuPDF", "version": pymupdf.VersionBind, "sort": True}
+
+
+def _extract_epub(path):
     with zipfile.ZipFile(path) as archive:
         container = ET.fromstring(archive.read("META-INF/container.xml"))
         package = next(n.attrib["full-path"] for n in container.iter() if n.tag.endswith("}rootfile"))
@@ -92,6 +93,16 @@ def extract(path):
             parser.feed(archive.read(member).decode("utf-8-sig"))
             rows.append({"unit": len(rows) + 1, "href": href, "text": "".join(parser.parts)})
     return rows, {"name": "stdlib-epub-htmlparser", "version": 1, "python": sys.version.split()[0]}
+
+
+_EXTRACTORS = {".pdf": _extract_pdf, ".epub": _extract_epub}
+
+
+def extract(path):
+    extractor = _EXTRACTORS.get(path.suffix.lower())
+    if extractor is None:
+        raise ValueError("Supported formats: PDF and EPUB")
+    return extractor(path)
 
 
 def ingest(args):
@@ -139,54 +150,79 @@ def verify():
     return int(bool(errors))
 
 
-def main():
+def _list_books(args):
+    emit(sorted(records(), key=lambda record: record["id"]))
+
+
+def _verify_books(args):
+    return verify()
+
+
+def _show_unit(args):
+    record = get_record(args.book)
+    if record is None or not 1 <= args.unit <= record["units"]:
+        raise ValueError("Unknown book or out-of-range unit")
+    emit({"book": args.book, "source_sha256": record["sha256"], **units(record)[args.unit - 1]})
+
+
+def _search_matches(query, book):
+    for record in sorted(records(), key=lambda record: record["id"]):
+        if book and record["id"] != book:
+            continue
+        for row in units(record):
+            normalized = normalize(row["text"])
+            position = normalized.find(query)
+            if position < 0:
+                continue
+            yield {
+                "book": record["id"],
+                "unit": row["unit"],
+                "source_sha256": record["sha256"],
+                "excerpt_normalized": normalized[max(0, position - 100):position + len(query) + 250],
+            }
+
+
+def _search(args):
+    query = normalize(args.query)
+    if not query or args.limit < 1:
+        raise ValueError("Query must not be empty; limit must be positive")
+    if args.book and get_record(args.book) is None:
+        raise ValueError("Unknown book")
+    matches = list(_search_matches(query, args.book))
+    emit({
+        "query": query,
+        "total": len(matches),
+        "matches": matches[:args.limit],
+        "ordering": "book_id_then_unit",
+        "method": "normalized_literal_substring",
+    })
+
+
+def _parser():
     parser = argparse.ArgumentParser(description=__doc__)
-    sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("list")
-    sub.add_parser("verify")
+    sub = parser.add_subparsers(required=True)
+    sub.add_parser("list").set_defaults(handler=_list_books)
+    sub.add_parser("verify").set_defaults(handler=_verify_books)
     show = sub.add_parser("show")
+    show.set_defaults(handler=_show_unit)
     show.add_argument("book")
     show.add_argument("unit", type=int)
     search = sub.add_parser("search")
+    search.set_defaults(handler=_search)
     search.add_argument("query")
     search.add_argument("--book")
     search.add_argument("--limit", type=int, default=10)
     add = sub.add_parser("ingest")
+    add.set_defaults(handler=ingest)
     add.add_argument("id")
     add.add_argument("file")
     add.add_argument("--title", required=True)
-    args = parser.parse_args()
-    if args.command == "list":
-        emit(sorted(records(), key=lambda r: r["id"]))
-    elif args.command == "verify":
-        return verify()
-    elif args.command == "ingest":
-        ingest(args)
-    elif args.command == "show":
-        record = get_record(args.book)
-        if record is None or not 1 <= args.unit <= record["units"]:
-            raise ValueError("Unknown book or out-of-range unit")
-        emit({"book": args.book, "source_sha256": record["sha256"], **units(record)[args.unit - 1]})
-    else:
-        query = normalize(args.query)
-        if not query or args.limit < 1:
-            raise ValueError("Query must not be empty; limit must be positive")
-        if args.book and get_record(args.book) is None:
-            raise ValueError("Unknown book")
-        matches = []
-        for record in sorted(records(), key=lambda r: r["id"]):
-            if args.book and record["id"] != args.book:
-                continue
-            for row in units(record):
-                normalized = normalize(row["text"])
-                position = normalized.find(query)
-                if position >= 0:
-                    matches.append({"book": record["id"], "unit": row["unit"],
-                                    "source_sha256": record["sha256"],
-                                    "excerpt_normalized": normalized[max(0, position - 100):position + len(query) + 250]})
-        emit({"query": query, "total": len(matches), "matches": matches[:args.limit],
-              "ordering": "book_id_then_unit", "method": "normalized_literal_substring"})
-    return 0
+    return parser
+
+
+def main(argv=None):
+    args = _parser().parse_args(argv)
+    return args.handler(args) or 0
 
 
 if __name__ == "__main__":

@@ -21,6 +21,10 @@ python3 scripts/knowledge.py show pfds 66
 python3 -m unittest discover -s tests -v
 ```
 
+El CLI asigna un manejador a cada subcomando (Command). La extracción selecciona
+un extractor PDF o EPUB por extensión (Strategy), manteniendo la consulta
+independiente de las dependencias de ingestión.
+
 La búsqueda encuentra una subcadena literal tras normalizar Unicode NFKC, mayúsculas y espacios. Ordena por identificador de libro y número de unidad. No usa embeddings, historial ni puntuaciones de relevancia. La misma entrada y el mismo corpus producen el mismo JSON. No encontrar una frase no demuestra que el concepto esté ausente: consultar el mapa bilingüe y las notas.
 
 Los números de PDF son páginas físicas empezando en 1, no necesariamente la numeración impresa. En EPUB son entradas del spine; `href` identifica el documento. `show` devuelve el texto extraído completo de la unidad. Los extractos de `search` están normalizados: no usarlos como citas textuales sin cotejar `show` y el original.
