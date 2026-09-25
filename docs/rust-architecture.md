@@ -65,7 +65,8 @@ de borde y los resultados reales previos dentro del dominio soportado.
 Se conservan el perfil, fórmulas y gates iniciales. El conjunto de 64 casos de
 referencia se generó antes de sustituir la ruta de ejecución, con semilla 481.
 Las pruebas normales Rust leen esa evidencia fija y no ejecutan Python.
-Los informes de deejai y las fixtures también verifican igualdad de diagnóstico.
+Las integraciones sobre fixtures verifican igualdad de diagnóstico entre
+ejecuciones con caché y sin ella. No dependen de informes locales guardados.
 
 Los scripts Python se mantienen como referencia histórica y herramienta de
 consulta del corpus; no forman parte del camino de ejecución Rust. Los archivos

@@ -1,4 +1,4 @@
-use agent_quality::{data, engine, report, runner, workspace};
+use agent_quality::{data, engine, runner, workspace};
 use serde_json::{Value, json};
 use std::{collections::BTreeMap, fs, path::Path, time::Duration};
 
@@ -45,39 +45,6 @@ fn numeric_json(v: &Value) -> Value {
         ),
         _ => v.clone(),
     }
-}
-#[test]
-fn parity_with_recorded_deejai_and_fixtures() {
-    let example = data::read(&data::root().join("reports/example.json")).unwrap();
-    let deejai = data::read(&data::root().join("reports/deejai.json")).unwrap();
-    let (concepts, rules) = report::catalog().unwrap();
-    for original in [&example, &example["baseline_report"], &deejai] {
-        let result = engine::evaluate(
-            &original["raw_metrics"],
-            &original["policy"],
-            &profile(),
-            &capabilities(),
-        )
-        .unwrap();
-        for key in [
-            "score",
-            "quality_vector",
-            "gates",
-            "accepted",
-            "status",
-            "missing_dimensions",
-        ] {
-            assert_eq!(result[key], original[key], "{key}");
-        }
-        assert_eq!(
-            report::diagnosis(original, &result, &original["policy"], &concepts, &rules).unwrap(),
-            original["diagnosis"]
-        );
-    }
-    assert_eq!(
-        engine::compare(&example["baseline_report"], &example, &policy(), &profile()).unwrap(),
-        example["baseline_comparison"]
-    );
 }
 #[test]
 fn missing_capability_prevents_approval() {

@@ -1,5 +1,9 @@
 # Validación del núcleo Rust — 2026-09-15
 
+Este documento registra una validación histórica. Los informes mencionados fueron
+retirados del repositorio y la prueba que los leía se eliminó. La suite actual
+conserva los 64 casos de referencia y las integraciones reproducibles sobre fixtures.
+
 ## Verificaciones completadas
 
 - `cargo test --locked`: 13 pruebas de núcleo aprobadas; 3 integraciones excluidas por defecto.
@@ -9,7 +13,7 @@
 - `cargo build --release --locked`: binario optimizado construido.
 
 Una de las pruebas compara 64 casos fijos calculados por el motor Python previo.
-Otra compara los resultados de las dos fixtures y de deejai, incluyendo diagnóstico
+Otra prueba, retirada junto con los informes, comparaba los resultados de las dos fixtures y de deejai, incluyendo diagnóstico
 y comparación baseline/candidato. Las pruebas normales no ejecutan Python ni Elixir.
 
 También se prueban pesos inválidos, datos ausentes, capacidades faltantes,
@@ -24,11 +28,9 @@ modificación de entradas por tests y conservación de los originales.
 
 ## deejai: ejecución real
 
-Informes:
-
-- `reports/deejai-rust-cold.json`: primer uso del espacio administrado.
-- `reports/deejai-rust-warm.json`: reutilización del mismo espacio.
-- `reports/deejai.json`: referencia Python anterior.
+Se compararon tres ejecuciones: el primer uso del espacio administrado, su
+reutilización y la referencia Python anterior. Los informes eran salidas locales
+y ya no se distribuyen.
 
 En los tres coinciden `raw_metrics`, `quality_vector`, `score`, `gates`,
 `diagnosis` y `source`. Compilación exitosa; 85 pruebas aprobadas de 85.

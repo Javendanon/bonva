@@ -5,3 +5,7 @@ _build/
 target/
 .quality-cache/
 .elixir_ls/
+
+# Informes de ejecuciones locales
+/reports/*
+!/reports/README.md

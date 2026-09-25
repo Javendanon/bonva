@@ -26,7 +26,7 @@ cargo build --release --locked
 ./target/release/agent-quality evaluate fixtures/good --baseline fixtures/bad --output reports/comparacion-rust.json
 ```
 
-Para deejai la entrada es `/Users/javendano/elixir/deejai/web`.
+Los informes en `reports/` son salidas locales y no se versionan.
 
 ### Skill y análisis de listas
 

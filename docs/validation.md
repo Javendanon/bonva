@@ -1,5 +1,8 @@
 # Validación ejecutada — 2026-09-15
 
+Este documento registra una validación histórica. Sus informes de ejecución se
+retiraron del repositorio; las pruebas actuales generan su propia evidencia.
+
 ## Suite propia
 
 `python3 -m unittest discover -s tests -v`: **30 pruebas aprobadas**.
@@ -13,13 +16,13 @@ omitidas, alteración de fuente, salidas temporales y cambios del contrato de te
 
 ## Ejemplo controlado
 
-`reports/example.json` conserva ambas evaluaciones. Baseline 6.683333, candidato
+La comparación de fixtures produjo baseline 6.683333, candidato
 10, mejora 3.316667. Dos tests aprobados en cada proyecto. El baseline excede el
 umbral de decisiones; el candidato pasa. No se afirma una mejora de runtime.
 
 ## Proyecto real: deejai/web
 
-`reports/deejai.json` conserva la ejecución final en copia temporal:
+La ejecución histórica final en copia temporal produjo:
 
 - 39 archivos Elixir de lib; 247 cláusulas analizadas.
 - Compilación exitosa; 85 tests, 85 aprobados, ninguno omitido ni excluido.
